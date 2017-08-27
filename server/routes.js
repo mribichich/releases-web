@@ -12,7 +12,8 @@ const router = express.Router();
 const readdir = util.promisify(fs.readdir);
 const stat = util.promisify(fs.stat);
 
-const releasesFolder = "/Users/ld/Downloads/releases";
+const releasesFolder =
+  process.env.RELEASES_FOLDER || "/Users/ld/Downloads/releases";
 
 const getFilePath = async (dir, file) => {
   const files = await readdir(dir);

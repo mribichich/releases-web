@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import FileSaver from "file-saver";
 
 import Applications from "../components/Applications";
 
@@ -8,22 +10,24 @@ class Container extends Component {
     apps: []
   };
 
-  componentWillMount() {
-    const apps = [
-      { name: "Sis.Access.Web", versions: ["1.0.2", "1.0.1", "1.0.0"] },
-      { name: "Sis.ControlPanel.Web", versions: ["1.1.0", "1.0.1", "1.0.0"] },
-      { name: "Sis.ControlPanel.Api", versions: ["1.2.0", "1.1.0", "1.0.0"] }
-    ];
+  async componentWillMount() {
+    // const apps = [
+    //   { name: "Sis.Access.Web", versions: ["1.0.2", "1.0.1", "1.0.0"] },
+    //   { name: "Sis.ControlPanel.Web", versions: ["1.1.0", "1.0.1", "1.0.0"] },
+    //   { name: "Sis.ControlPanel.Api", versions: ["1.2.0", "1.1.0", "1.0.0"] }
+    // ];
+
+    const resp = await axios.get("/api/applications");
 
     this.setState({
-      apps: apps.map(m => ({
+      apps: resp.data.map(m => ({
         ...m,
         versions: m.versions.map(v => ({ number: v, checked: false }))
       }))
     });
   }
 
-  handlerOnDownload = () => {
+  handlerOnDownload = async () => {
     const apps = this.state.apps.reduce((acc, cur) => {
       const versionChecked = cur.versions.find(f => f.checked);
 
@@ -34,7 +38,17 @@ class Container extends Component {
       return acc;
     }, []);
 
-    // console.log(apps);
+    const resp = await axios.post("/api/applications/download", apps, {
+      responseType: "arraybuffer"
+    });
+    var blob = new Blob(
+      [resp.data],
+      {
+        type: "application/zip"
+      },
+      `releases_${new Date().toJSON()}.zip`
+    );
+    FileSaver.saveAs(blob);
   };
 
   handlerOnSelection = selected => {

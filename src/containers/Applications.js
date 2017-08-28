@@ -41,13 +41,9 @@ class Container extends Component {
     const resp = await axios.post("/api/applications/download", apps, {
       responseType: "arraybuffer"
     });
-    var blob = new Blob(
-      [resp.data],
-      {
-        type: "application/zip"
-      },
-      `releases_${new Date().toJSON()}.zip`
-    );
+    var blob = new File([resp.data], `releases_${new Date().toJSON()}.zip`, {
+      type: "application/zip"
+    });
     FileSaver.saveAs(blob);
   };
 

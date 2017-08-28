@@ -5,15 +5,13 @@ const path = require("path");
 const archiver = require("archiver");
 const unzip = require("unzip");
 
+const config = require("./config");
 const CONSTANTS = require("./constants");
 
 const router = express.Router();
 
 const readdir = util.promisify(fs.readdir);
 const stat = util.promisify(fs.stat);
-
-const releasesFolder =
-  process.env.RELEASES_FOLDER || "/Users/ld/Downloads/releases";
 
 const getFilePath = async (dir, file) => {
   const files = await readdir(dir);
@@ -84,7 +82,7 @@ const zipFiles = files => {
 
 router.get("/applications", async (req, res) => {
   try {
-    const dirs = await readdir(releasesFolder);
+    const dirs = await readdir(config.releasesPath);
 
     const isDirectory = dir => {
       const stats = fs.statSync(dir);
@@ -93,12 +91,12 @@ router.get("/applications", async (req, res) => {
     };
 
     const filteredDirs = dirs.filter(f =>
-      isDirectory(path.join(releasesFolder, f))
+      isDirectory(path.join(config.releasesPath, f))
     );
 
     const apps = await Promise.all(
       filteredDirs.map(async m => {
-        const appDir = path.join(releasesFolder, m);
+        const appDir = path.join(config.releasesPath, m);
 
         const versions = await readdir(appDir);
 

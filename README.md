@@ -5,11 +5,11 @@
 ### Env Vars
 
 - PORT
-- RELEASES_FOLDER
+- RELEASES_PATH
 
 ## Development
 
-### `yarn start`
+### `yarn start` and `yarn start:server`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

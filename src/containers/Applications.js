@@ -11,12 +11,6 @@ class Container extends Component {
   };
 
   async componentWillMount() {
-    // const apps = [
-    //   { name: "Sis.Access.Web", versions: ["1.0.2", "1.0.1", "1.0.0"] },
-    //   { name: "Sis.ControlPanel.Web", versions: ["1.1.0", "1.0.1", "1.0.0"] },
-    //   { name: "Sis.ControlPanel.Api", versions: ["1.2.0", "1.1.0", "1.0.0"] }
-    // ];
-
     const resp = await axios.get("/api/applications");
 
     this.setState({
@@ -47,16 +41,14 @@ class Container extends Component {
     FileSaver.saveAs(blob);
   };
 
-  handlerOnSelection = selected => {
+  handlerOnSelection = (name, version) => {
     // console.log(selected);
 
     this.setState(prevState => {
-      const index = prevState.apps.findIndex(f => f.name === selected.name);
+      const index = prevState.apps.findIndex(f => f.name === name);
 
       const app = prevState.apps[index];
-      const versionIndex = app.versions.findIndex(
-        f => f.number === selected.version
-      );
+      const versionIndex = app.versions.findIndex(f => f.number === version);
 
       prevState.apps = [
         ...prevState.apps.slice(0, index),
@@ -84,11 +76,18 @@ class Container extends Component {
 
   render() {
     return (
-      <Applications
-        apps={this.state.apps}
-        onDownload={this.handlerOnDownload}
-        onSelection={this.handlerOnSelection}
-      />
+      <div>
+        <h1>Applications Versions</h1>
+
+        <br />
+        <button onClick={this.handlerOnDownload}>Download</button>
+        <br />
+
+        <Applications
+          apps={this.state.apps}
+          onSelection={this.handlerOnSelection}
+        />
+      </div>
     );
   }
 }

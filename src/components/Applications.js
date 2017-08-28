@@ -3,38 +3,30 @@ import PropTypes from "prop-types";
 
 import Versions from "./Versions";
 
-const Applications = ({ apps, onDownload, onSelection }) => {
-  const handleOnSelection = (name, version) => {
-    onSelection({ name, version });
-  };
+const Applications = ({ apps, onSelection }) => {
+  // const handleOnSelection = (name, version) => {
+  //   onSelection({ name, version });
+  // };
 
   return (
-    <div>
-      <h1>Applications Versions</h1>
+    <ul>
+      {apps.map(m =>
+        <li key={m.name}>
+          {m.name}
 
-      <br />
-      <button onClick={onDownload}>Download</button>
-      <br />
-
-      <ul>
-        {apps.map(m =>
-          <li key={m.name}>
-            {m.name}
-
-            <Versions
-              versions={m.versions}
-              onSelection={version => handleOnSelection(m.name, version)}
-            />
-          </li>
-        )}
-      </ul>
-    </div>
+          <Versions
+            versions={m.versions}
+            onSelection={version => onSelection(m.name, version)}
+          />
+        </li>
+      )}
+    </ul>
   );
 };
 
 Applications.propTypes = {
   apps: PropTypes.array.isRequired,
-  onDownload: PropTypes.func.isRequired
+  onSelection: PropTypes.func.isRequired
 };
 
 export default Applications;

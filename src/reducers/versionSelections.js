@@ -5,7 +5,7 @@ const initialState = [];
 export default function(state = initialState, action) {
   switch (action.type) {
     case actionTypes.APPLICATIONS_SET:
-      return setVersionSelections(state, action);
+      return setVersionSelections(state, action.payload);
     case actionTypes.SELECT_VERSION:
       return selectVersion(state, action.payload);
     case actionTypes.TOGGLE_APPLICATION_EXPANDED:
@@ -14,15 +14,15 @@ export default function(state = initialState, action) {
   return state;
 }
 
-function setVersionSelections(state, action) {
-  const { applications } = action;
+function setVersionSelections(state, payload) {
+  const { applications } = payload;
   return applications.map(m => ({
     ...m,
     versions: m.versions.map(v => ({
       number: v,
-      checked: false,
-      expanded: false
-    }))
+      checked: false
+    })),
+    expanded: false
   }));
 }
 

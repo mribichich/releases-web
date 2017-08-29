@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 import Applications from "../components/Applications";
 
-class Container extends Component {
+export class ApplicationsContainer extends Component {
   handlerOnDownload = async () => {
     const apps = this.props.versionSelections.reduce((acc, cur) => {
       const versionChecked = cur.versions.find(f => f.checked);
@@ -35,7 +35,7 @@ class Container extends Component {
 
     return (
       <div>
-        <h1>Applications Versions</h1>
+        <h1>Downloads Web</h1>
 
         <br />
         <button onClick={this.handlerOnDownload}>Download</button>
@@ -51,7 +51,7 @@ class Container extends Component {
   }
 }
 
-Container.propTypes = {
+ApplicationsContainer.propTypes = {
   versionSelections: PropTypes.array.isRequired,
   onSelectVersion: PropTypes.func
 };
@@ -75,4 +75,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  ApplicationsContainer
+);

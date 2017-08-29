@@ -5,13 +5,13 @@ const initialState = [];
 export default function(state = initialState, action) {
   switch (action.type) {
     case actionTypes.APPLICATIONS_SET:
-      return setApplications(state, action);
+      return setApplications(state, action.payload);
   }
   return state;
 }
 
-function setApplications(state, action) {
-  const { applications } = action;
+function setApplications(state, payload) {
+  const { applications } = payload;
 
   return [...applications];
 }

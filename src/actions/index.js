@@ -1,2 +1,2 @@
 export { setApplications } from "./applications";
-export { selectVersion } from "./versionSelection";
+export { selectVersion, toggleApplicationExpanded } from "./versionSelection";

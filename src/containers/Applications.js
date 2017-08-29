@@ -31,6 +31,8 @@ class Container extends Component {
   };
 
   render() {
+    const { versionSelections, onSelectVersion, onToggleExpanded } = this.props;
+
     return (
       <div>
         <h1>Applications Versions</h1>
@@ -40,8 +42,9 @@ class Container extends Component {
         <br />
 
         <Applications
-          apps={this.props.versionSelections}
-          onSelection={this.props.onSelectVersion}
+          apps={versionSelections}
+          onSelection={onSelectVersion}
+          onToggleExpanded={onToggleExpanded}
         />
       </div>
     );
@@ -65,6 +68,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onSelectVersion: (name, version) => {
       dispatch(actions.selectVersion(name, version));
+    },
+    onToggleExpanded: name => {
+      dispatch(actions.toggleApplicationExpanded(name));
     }
   };
 }

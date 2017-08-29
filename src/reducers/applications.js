@@ -12,5 +12,6 @@ export default function(state = initialState, action) {
 
 function setApplications(state, action) {
   const { applications } = action;
-  return [ ...applications];
+
+  return [...applications];
 }

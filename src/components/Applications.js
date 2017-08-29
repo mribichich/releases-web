@@ -3,21 +3,21 @@ import PropTypes from "prop-types";
 
 import Versions from "./Versions";
 
-const Applications = ({ apps, onSelection }) => {
-  // const handleOnSelection = (name, version) => {
-  //   onSelection({ name, version });
-  // };
-
+const Applications = ({ apps, onSelection, onToggleExpanded }) => {
   return (
     <ul>
       {apps.map(m =>
         <li key={m.name}>
+          {m.expanded
+            ? <button onClick={() => onToggleExpanded(m.name)}>-</button>
+            : <button onClick={() => onToggleExpanded(m.name)}>+</button>}{" "}
           {m.name}
-
-          <Versions
-            versions={m.versions}
-            onSelection={version => onSelection(m.name, version)}
-          />
+          {m.expanded
+            ? <Versions
+                versions={m.versions}
+                onSelection={version => onSelection(m.name, version)}
+              />
+            : null}
         </li>
       )}
     </ul>
@@ -26,7 +26,8 @@ const Applications = ({ apps, onSelection }) => {
 
 Applications.propTypes = {
   apps: PropTypes.array.isRequired,
-  onSelection: PropTypes.func.isRequired
+  onSelection: PropTypes.func.isRequired,
+  onToggleExpanded: PropTypes.func.isRequired
 };
 
 export default Applications;

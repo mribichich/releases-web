@@ -8,6 +8,8 @@ export default function(state = initialState, action) {
       return setVersionSelections(state, action);
     case actionTypes.SELECT_VERSION:
       return selectVersion(state, action.payload);
+    case actionTypes.TOGGLE_APPLICATION_EXPANDED:
+      return toggleApplicationExpanded(state, action.payload);
   }
   return state;
 }
@@ -16,7 +18,11 @@ function setVersionSelections(state, action) {
   const { applications } = action;
   return applications.map(m => ({
     ...m,
-    versions: m.versions.map(v => ({ number: v, checked: false }))
+    versions: m.versions.map(v => ({
+      number: v,
+      checked: false,
+      expanded: false
+    }))
   }));
 }
 
@@ -45,6 +51,20 @@ function selectVersion(state, payload) {
           .map(m => ({ ...m, checked: false }))
       ]
     },
+    ...state.slice(index + 1)
+  ];
+}
+
+function toggleApplicationExpanded(state, payload) {
+  const { name } = payload;
+
+  const index = state.findIndex(f => f.name === name);
+
+  const app = state[index];
+
+  return [
+    ...state.slice(0, index),
+    { ...app, expanded: !app.expanded },
     ...state.slice(index + 1)
   ];
 }

@@ -9,3 +9,12 @@ export function selectVersion(name, version) {
     }
   };
 }
+
+export function toggleApplicationExpanded(name) {
+  return {
+    type: actionTypes.TOGGLE_APPLICATION_EXPANDED,
+    payload: {
+      name
+    }
+  };
+}

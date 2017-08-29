@@ -19,15 +19,20 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](#running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `yarn run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Releases Folder
 
-See the section about [deployment](#deployment) for more information.
+Each product releases should be in a separate folder with the products name. 
+Each folder should contain the different versions, following the next format:
+
+`{versionNumber}_{typeOfRelease}`
+
+Ej:
+- 1.2.3_setup.exe
+- 1.0.123_binaries.zip

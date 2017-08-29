@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import FileSaver from "file-saver";
+import { connect } from "react-redux";
 
+import * as actions from "../actions";
 import Applications from "../components/Applications";
 
 class Container extends Component {
@@ -11,10 +13,21 @@ class Container extends Component {
   };
 
   async componentWillMount() {
-    const resp = await axios.get("/api/applications");
+    // this.props.setApplications([{ app: 1 }, { prop: 2 }]);
+    // const resp = await axios.get("/api/applications");
+    // const apps = resp.data
+    // const apps = this.props.apps;
+    // this.setState({
+    //   apps: apps.map(m => ({
+    //     ...m,
+    //     versions: m.versions.map(v => ({ number: v, checked: false }))
+    //   }))
+    // });
+  }
 
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      apps: resp.data.map(m => ({
+      apps: nextProps.apps.map(m => ({
         ...m,
         versions: m.versions.map(v => ({ number: v, checked: false }))
       }))
@@ -42,36 +55,36 @@ class Container extends Component {
   };
 
   handlerOnSelection = (name, version) => {
-    // console.log(selected);
+    this.props.selectVersion(name, version);
 
-    this.setState(prevState => {
-      const index = prevState.apps.findIndex(f => f.name === name);
+    // this.setState(prevState => {
+    //   const index = prevState.apps.findIndex(f => f.name === name);
 
-      const app = prevState.apps[index];
-      const versionIndex = app.versions.findIndex(f => f.number === version);
+    //   const app = prevState.apps[index];
+    //   const versionIndex = app.versions.findIndex(f => f.number === version);
 
-      prevState.apps = [
-        ...prevState.apps.slice(0, index),
-        {
-          ...app,
-          versions: [
-            ...app.versions
-              .slice(0, versionIndex)
-              .map(m => ({ ...m, checked: false })),
-            {
-              ...app.versions[versionIndex],
-              checked: !app.versions[versionIndex].checked
-            },
-            ...app.versions
-              .slice(versionIndex + 1)
-              .map(m => ({ ...m, checked: false }))
-          ]
-        },
-        ...prevState.apps.slice(index + 1)
-      ];
+    //   prevState.apps = [
+    //     ...prevState.apps.slice(0, index),
+    //     {
+    //       ...app,
+    //       versions: [
+    //         ...app.versions
+    //           .slice(0, versionIndex)
+    //           .map(m => ({ ...m, checked: false })),
+    //         {
+    //           ...app.versions[versionIndex],
+    //           checked: !app.versions[versionIndex].checked
+    //         },
+    //         ...app.versions
+    //           .slice(versionIndex + 1)
+    //           .map(m => ({ ...m, checked: false }))
+    //       ]
+    //     },
+    //     ...prevState.apps.slice(index + 1)
+    //   ];
 
-      // console.log(prevState.apps);
-    });
+    //   // console.log(prevState.apps);
+    // });
   };
 
   render() {
@@ -83,8 +96,9 @@ class Container extends Component {
         <button onClick={this.handlerOnDownload}>Download</button>
         <br />
 
+        {/* apps={this.state.apps} */}
         <Applications
-          apps={this.state.apps}
+          apps={this.props.versionSelections}
           onSelection={this.handlerOnSelection}
         />
       </div>
@@ -94,4 +108,23 @@ class Container extends Component {
 
 Container.propTypes = {};
 
-export default Container;
+function mapStateToProps(state) {
+  const { applications, versionSelections } = state;
+  return {
+    apps: applications,
+    versionSelections: versionSelections
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setApplications: apps => {
+      dispatch(actions.setApplications(apps));
+    },
+    selectVersion: (name, version) => {
+      dispatch(actions.selectVersion(name, version));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

@@ -6,8 +6,10 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case actionTypes.APPLICATIONS_SET:
       return setApplications(state, action.payload);
+
+    default:
+      return state;
   }
-  return state;
 }
 
 function setApplications(state, payload) {

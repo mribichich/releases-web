@@ -10,8 +10,10 @@ export default function(state = initialState, action) {
       return selectVersion(state, action.payload);
     case actionTypes.TOGGLE_APPLICATION_EXPANDED:
       return toggleApplicationExpanded(state, action.payload);
+
+    default:
+      return state;
   }
-  return state;
 }
 
 function setVersionSelections(state, payload) {

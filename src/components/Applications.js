@@ -11,7 +11,11 @@ const Applications = ({ apps, onSelection, onToggleExpanded }) => {
           {m.expanded
             ? <button onClick={() => onToggleExpanded(m.name)}>-</button>
             : <button onClick={() => onToggleExpanded(m.name)}>+</button>}{" "}
-          {m.name}
+          {m.versions.some(s => s.checked)
+            ? <strong>
+                {m.name}
+              </strong>
+            : m.name}
           {m.expanded
             ? <Versions
                 versions={m.versions}

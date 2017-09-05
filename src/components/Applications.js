@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import R from "ramda";
 
 import Versions from "./Versions";
+
+var versionSort = R.sortWith([R.descend(R.prop("number"))]);
 
 const Applications = ({ apps, onSelection, onToggleExpanded }) => {
   return (
@@ -18,7 +21,7 @@ const Applications = ({ apps, onSelection, onToggleExpanded }) => {
             : m.name}
           {m.expanded
             ? <Versions
-                versions={m.versions}
+                versions={versionSort(m.versions)}
                 onSelection={version => onSelection(m.name, version)}
               />
             : null}

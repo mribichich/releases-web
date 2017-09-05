@@ -41,6 +41,11 @@ export class ApplicationsContainer extends Component {
         <button onClick={this.handlerOnDownload}>Download</button>
         <br />
 
+        {this.renderSelectedVersions(versionSelections)}
+
+        <button onClick={this.handlerOnDownload}>Download</button>
+        <br />
+
         <Applications
           apps={versionSelections}
           onSelection={onSelectVersion}
@@ -48,6 +53,27 @@ export class ApplicationsContainer extends Component {
         />
       </div>
     );
+  }
+
+  renderSelectedVersions(versionSelections) {
+    const selected = versionSelections
+      .map(m => ({ name: m.name, version: m.versions.find(f => f.checked) }))
+      .filter(f => f.version);
+
+    return selected.length > 0
+      ? <ul>
+          {selected.map(m =>
+            <li key={m.name}>
+              {m.name} {m.version.number}
+            </li>
+          )}
+        </ul>
+      : <div>
+          <br />
+          <span>No version selected</span>
+          <br />
+          <br />
+        </div>;
   }
 }
 

@@ -1,32 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
-import R from "ramda";
+import React from 'react';
+import PropTypes from 'prop-types';
+import R from 'ramda';
 
-import Versions from "./Versions";
+import Versions from './Versions';
 
-var versionSort = R.sortWith([R.descend(R.prop("number"))]);
+var versionSort = R.sortWith([R.descend(R.prop('byNumber'))]);
 
 const Applications = ({ apps, onSelection, onToggleExpanded }) => {
   return (
     <ul>
-      {apps.map(m =>
+      {apps.map(m => (
         <li key={m.name}>
-          {m.expanded
-            ? <button onClick={() => onToggleExpanded(m.name)}>-</button>
-            : <button onClick={() => onToggleExpanded(m.name)}>+</button>}{" "}
-          {m.versions.some(s => s.checked)
-            ? <strong>
-                {m.name}
-              </strong>
-            : m.name}
-          {m.expanded
-            ? <Versions
-                versions={versionSort(m.versions)}
-                onSelection={version => onSelection(m.name, version)}
-              />
-            : null}
+          {m.expanded ? (
+            <button onClick={() => onToggleExpanded(m.name)}>-</button>
+          ) : (
+            <button onClick={() => onToggleExpanded(m.name)}>+</button>
+          )}{' '}
+          {m.versions.some(s => s.checked) ? <strong>{m.name}</strong> : m.name}
+          {m.expanded ? (
+            <Versions
+              versions={versionSort(m.versions)}
+              onSelection={version => onSelection(m.name, version)}
+            />
+          ) : null}
         </li>
-      )}
+      ))}
     </ul>
   );
 };

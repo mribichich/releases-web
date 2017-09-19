@@ -1,4 +1,4 @@
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from '../constants/actionTypes';
 
 const initialState = [];
 
@@ -16,13 +16,20 @@ export default function(state = initialState, action) {
   }
 }
 
+export const versionToNumber = version => {
+  const parts = version.split('_');
+  const v = parts[0].split('.').map(m => m.padStart(5, '0'));
+  return [v.join('.'), parts[1]].join('_');
+};
+
 function setVersionSelections(state, payload) {
   const { applications } = payload;
   return applications.map(m => ({
     ...m,
     versions: m.versions.map(v => ({
       number: v,
-      checked: false
+      checked: false,
+      byNumber: versionToNumber(v)
     })),
     expanded: false
   }));

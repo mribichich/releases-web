@@ -35,7 +35,9 @@ router.get("/applications", async (req, res) => {
         return {
           name: m,
           versions: versions
-            .filter(f => f !== ".DS_Store" && f !== "explorer")
+            .filter(f =>
+              [".DS_Store", "explorer", "desktop"].every(s => s !== f)
+            )
             .map(m => path.parse(path.join(appDir, m)).name)
         };
       })
